@@ -1,0 +1,17 @@
+{
+  "nome": "Spawn: Armageddon",
+  "serial": "SLES-52326",
+  "elf": "SLES_523.26",
+  "cd_root": "",
+  "exe": "spawn.exe",
+  "iso_sha1": [
+    "d3aa8683080efa1f188cda33638c3cb46aa1a93d"
+  ],
+  "elf_sha1": [
+    "a744b5abbef657ca6b56a3346f4caf45693123dc"
+  ],
+  "versao": "europeia, SLES-52326",
+  "ambiente": {
+    "PS2X_RET": "10CB08:1"
+  }
+}
