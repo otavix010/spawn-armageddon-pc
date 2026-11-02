@@ -21,7 +21,8 @@
                      "PS2X_FIXA32":  "2F1158:2,2F117C:3C088889",
                      "PS2X_VBLANK_HZ":  "120",
                      "PS2X_GS_THREADS":  "4",
-                     "PS2X_GS_GIRO":  "0"
+                     "PS2X_GS_GIRO":  "0",
+                     "PS2X_ASPECTO_LIGA":  "338784=1"
                  },
     "vu1_quentes":  [
                         "92f96e862905f88f",

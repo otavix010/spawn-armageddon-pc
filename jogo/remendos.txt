@@ -1,0 +1,4 @@
+# Spawn (SLES-52326): modo widescreen do jogo multiplica a proporção por 16/9 / (4/3) em 0x121DE0;
+# a constante 16/9 (lui/ori) vira lui at,0x8 / lw at,-0x100(at) = palavra 0x7FF00 que o runtime grava
+00121DE0 3C010008
+00121DE4 8C21FF00
