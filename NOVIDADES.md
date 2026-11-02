@@ -1,7 +1,48 @@
 # Novidades do port
 
 O Otavix Launcher mostra este arquivo na página "Novidades" do jogo. Cada atualização tem um título
-"## <data> · <versão>" e o texto em português (### pt) e inglês (### en). As mais novas ficam em cima.
+"## <data> · <versão>" e o texto em português (### pt), inglês (### en) e espanhol (### es). As mais novas ficam em cima.
+
+## 02/11/2026 · 0.4.0
+### pt
+- **Menu de opções** no launcher: modo de tela (janela ou tela cheia; F11 ou Alt+Enter alternam no jogo), tamanho da janela, escalonador (bilinear, AMD FSR 1 ou NVIDIA Image Scaling), nitidez, anti-serrilhamento FXAA, proporção 4:3/16:9 e predefinições Leve, Equilibrado e Qualidade.
+- **Desenho na placa de vídeo**: a parte gráfica do console (GS) agora roda na GPU, com o resultado conferido pixel a pixel contra o desenho no processador.
+- Geometria (VU1) mais rápida e as partes pesadas do jogo em núcleos separados em processadores de até 6 núcleos.
+- Correção: aberto pelo launcher, o jogo agora usa as mesmas configurações do gerador (antes ficava sem elas e mais lento).
+### en
+- **Options menu** in the launcher: display mode (window or fullscreen; F11 or Alt+Enter switch in game), window size, upscaler (bilinear, AMD FSR 1 or NVIDIA Image Scaling), sharpness, FXAA anti-aliasing, 4:3/16:9 aspect ratio and Light, Balanced and Quality presets.
+- **Drawing on the graphics card**: the console's graphics chip (GS) now runs on the GPU, its output checked pixel by pixel against drawing on the processor.
+- Faster geometry (VU1), and the game's heavy parts on separate cores on processors with up to 6 cores.
+- Fix: started from the launcher, the game now uses the same settings as the generator (it used to run without them, slower).
+### es
+- **Menú de opciones** en el launcher: modo de pantalla (ventana o pantalla completa; F11 o Alt+Enter alternan en el juego), tamaño de la ventana, escalador (bilineal, AMD FSR 1 o NVIDIA Image Scaling), nitidez, antialiasing FXAA, relación 4:3/16:9 y preajustes Ligero, Equilibrado y Calidad.
+- **Dibujo en la tarjeta gráfica**: el chip gráfico de la consola (GS) ahora funciona en la GPU, con el resultado comprobado píxel a píxel contra el dibujo en el procesador.
+- Geometría (VU1) más rápida y las partes pesadas del juego en núcleos separados en procesadores de hasta 6 núcleos.
+- Corrección: abierto desde el launcher, el juego ahora usa la misma configuración que el generador (antes iba sin ella y más lento).
+
+## 30/10/2026 · 0.3.0
+### pt
+- **Som**: o chip de som do PS2 (SPU2) agora é emulado — música, efeitos, vozes e sons de ambiente tocam como no console (antes o jogo era mudo).
+- **Vídeos**: as cenas em vídeo (abertura, história e demonstração) agora tocam, com som.
+- Correções no "sistema operacional" do console que o jogo usa (prioridade das tarefas), necessárias para os vídeos e para o carregamento das fases.
+- Testado: menu, vídeos, primeira fase (andar, pular, atacar, tutorial) e 15 minutos seguidos sem travar.
+### en
+- **Sound**: the PS2 sound chip (SPU2) is now emulated — music, effects, voices and ambience play like on the console (the game used to be silent).
+- **Videos**: the FMV scenes (intro, story and attract mode) now play, with sound.
+- Fixes in the console "operating system" used by the game (task priorities), needed for the videos and for level loading.
+- Tested: menu, videos, first level (walking, jumping, attacking, tutorial) and 15 minutes in a row without hanging.
+
+## 29/10/2026 · 0.2.0
+### pt
+- **Jogável a 60 FPS**, inclusive nas cenas mais pesadas (antes: ~3 FPS na fase 3D).
+- A geometria (VU1) agora é traduzida para C++ na sua máquina, a partir do executável do seu disco: o gerador ganhou a etapa "VU1". Nada do jogo vem no repositório.
+- Rasterização em AVX2 e em várias threads, filas mais leves entre as partes do console; usa uns 6 núcleos (testado também limitado a 8 threads lógicas: 60 FPS).
+- Se o Visual Studio tiver o componente "C++ Clang tools", a geometria fica um pouco mais rápida.
+### en
+- **Playable at 60 FPS**, even in the heaviest scenes (before: ~3 FPS in the 3D level).
+- The geometry processor (VU1) is now translated to C++ on your machine, from your disc's executable: the generator got a new "VU1" step. Nothing from the game ships in this repository.
+- AVX2 multi-threaded rasterizer and lighter queues between the console parts; uses about 6 cores (also tested limited to 8 logical threads: 60 FPS).
+- With the Visual Studio "C++ Clang tools" component installed, the geometry runs a bit faster.
 
 ## 26/10/2026 · 0.1.0
 ### pt

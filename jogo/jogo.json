@@ -1,17 +1,38 @@
 {
-  "nome": "Spawn: Armageddon",
-  "serial": "SLES-52326",
-  "elf": "SLES_523.26",
-  "cd_root": "",
-  "exe": "spawn.exe",
-  "iso_sha1": [
-    "d3aa8683080efa1f188cda33638c3cb46aa1a93d"
-  ],
-  "elf_sha1": [
-    "a744b5abbef657ca6b56a3346f4caf45693123dc"
-  ],
-  "versao": "europeia, SLES-52326",
-  "ambiente": {
-    "PS2X_RET": "10CB08:1"
-  }
+    "nome":  "Spawn: Armageddon",
+    "serial":  "SLES-52326",
+    "elf":  "SLES_523.26",
+    "cd_root":  "",
+    "exe":  "spawn.exe",
+    "iso_sha1":  [
+                     "d3aa8683080efa1f188cda33638c3cb46aa1a93d"
+                 ],
+    "elf_sha1":  [
+                     "a744b5abbef657ca6b56a3346f4caf45693123dc"
+                 ],
+    "versao":  "europeia, SLES-52326",
+    "ambiente":  {
+                     "PS2X_VU1_NATIVO":  "1",
+                     "PS2X_GS_THREAD":  "1",
+                     "PS2X_MTVU":  "1",
+                     "PS2X_GS_FILA":  "65536",
+                     "PS2X_MTVU_FILA":  "2048",
+                     "PS2X_RELOGIO_REAL":  "1",
+                     "PS2X_FIXA32":  "2F1158:2,2F117C:3C088889",
+                     "PS2X_VBLANK_HZ":  "120",
+                     "PS2X_GS_THREADS":  "4",
+                     "PS2X_GS_GIRO":  "0"
+                 },
+    "vu1_quentes":  [
+                        "92f96e862905f88f",
+                        "f3d16d53e42764a3",
+                        "06c71a679353efce",
+                        "965bf6f7c9941a0f",
+                        "7fc1989bfbc8cf8b",
+                        "4b60693cb34082b0",
+                        "8c4ebd30db7d3e7e",
+                        "7fd835245c242a70",
+                        "3e460b28bc767fff",
+                        "665a0378454562ce"
+                    ]
 }

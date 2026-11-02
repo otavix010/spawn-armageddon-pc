@@ -9,13 +9,15 @@
     2. confere a sua ISO e extrai os arquivos do disco para trabalho\disc;
     3. baixa o PS2Recomp na versão fixada, aplica as nossas correções e compila o tradutor;
     4. traduz o código do jogo (MIPS R5900 -> C++);
-    5. compila o jogo;
-    6. deixa o jogar.cmd pronto.
+    5. traduz os microprogramas de geometria (VU1) do executável do seu disco para C++;
+    6. compila o jogo;
+    7. deixa o jogar.cmd pronto.
   Os logs de cada etapa ficam em out\gerar\. Nada do jogo vem neste repositório: só o
-  mapa de funções (endereços) e as configurações da tradução.
+  mapa de funções (endereços), as configurações da tradução e a "receita" do VU1 (onde os
+  microprogramas ficam no executável: offsets e tamanhos, nunca os bytes).
 
 .PARAMETER Iso
-  A imagem .iso do DVD (a versão europeia indicada no README). Sem ela, abre uma janela
+  A imagem .iso do DVD (a versão indicada no README). Sem ela, abre uma janela
   para escolher o arquivo.
 .PARAMETER Jobs
   Compilações em paralelo (padrão: pela memória livre, ~3 GB por compilação).
@@ -90,7 +92,11 @@ function Etapa([string]$nome, [scriptblock]$corpo) {
     Set-Content -Path $marca -Value (Get-Date) -Encoding UTF8
     Msg ("{0}: ok ({1:N0} s)" -f $nome, ((Get-Date) - $t0).TotalSeconds)
 }
-function Sha1([string]$arq) { (Get-FileHash -Algorithm SHA1 -LiteralPath $arq).Hash.ToLower() }
+function Sha1([string]$arq) {
+    $r = Get-FileHash -Algorithm SHA1 -LiteralPath $arq -ErrorAction SilentlyContinue
+    if (-not $r) { throw "não consegui ler `"$arq`" (aberto em outro programa, ainda baixando ou só na nuvem, sem cópia local?)" }
+    $r.Hash.ToLower()
+}
 
 # ---------------------------------------------------------------------------- ferramentas
 function Achar-VS {
@@ -116,7 +122,7 @@ Etapa '1_ferramentas' {
     elseif ([int]$v -lt 311) { $falta += 'Python 3.11 ou mais novo (winget install Python.Python.3.12)' }
     if (-not (Achar-VS)) {
         $falta += 'Visual Studio 2022 Build Tools com C++ e "C++ CMake tools":' +
-                  "`r`n    winget install Microsoft.VisualStudio.2022.BuildTools --override `"--quiet --wait --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.CMake.Project --includeRecommended`""
+                  "`r`n    winget install Microsoft.VisualStudio.2022.BuildTools --override `"--quiet --wait --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.CMake.Project --add Microsoft.VisualStudio.Component.VC.Llvm.Clang --includeRecommended`""
     }
     if ($falta) { throw ("Falta instalar:`r`n  - " + ($falta -join "`r`n  - ")) }
     if (-not (Achar-Git)) {
@@ -161,8 +167,11 @@ Etapa '2_disco' {
         $Iso = Escolher-Iso "Escolha a ISO do $($JOGO.nome) ($($JOGO.versao))"
         if (-not $Iso) { throw 'sem a ISO do jogo' }
     }
+    if (-not (Test-Path -LiteralPath $Iso -PathType Leaf)) { throw "a ISO não existe: $Iso (escolha o arquivo .iso de novo)" }
     $Iso = (Resolve-Path -LiteralPath $Iso).Path
-    Msg "conferindo a ISO ($([math]::Round((Get-Item -LiteralPath $Iso).Length / 1GB, 2)) GB)"
+    $tam = (Get-Item -LiteralPath $Iso).Length
+    if ($tam -lt 100MB) { throw "a ISO tem só $([math]::Round($tam / 1MB, 1)) MB: arquivo incompleto ou não é a ISO do jogo (escolha o arquivo .iso de novo)" }
+    Msg "conferindo a ISO ($([math]::Round($tam / 1GB, 2)) GB)"
     $h = Sha1 $Iso
     Anotar $LOG "SHA-1 da ISO: $h"
     if ($JOGO.iso_sha1 -notcontains $h) {
@@ -220,6 +229,36 @@ Etapa '4_traduzir' {
     Exec $LOG "python `"$R\ferramentas\sincroniza.py`" `"$g`" `"$P\ps2xRuntime\src\runner`" `"$P\ps2xRuntime\include`""
 }
 
+# ---------------------------------------------------------------------------- VU1 (geometria)
+# Os microprogramas do VU1 ficam dentro do executável do jogo. A receita (jogo\vu1_receita.json) só diz onde
+# (offsets e tamanhos) e como montar a memória de código; o extrai_vu1.py monta a partir do SEU executável
+# (confere o SHA-1) e o vu1_tradutor.py gera o C++. Sem receita ou se algo falhar, o VU1 fica no interpretador:
+# o jogo roda igual, só que bem mais devagar.
+Etapa '5_vu1' {
+    $vu = Join-Path $P 'ps2xRuntime\src\lib\vu'
+    $dv = Join-Path $T 'vu1'
+    if (Test-Path -LiteralPath $dv) { Remove-Item -LiteralPath $dv -Recurse -Force }
+    $rec = Join-Path $R 'jogo\vu1_receita.json'
+    $ok = $false
+    if (Test-Path -LiteralPath $rec) {
+        try {
+            Exec $LOG "python -I `"$R\ferramentas\extrai_vu1.py`" extrai `"$rec`" `"$ELF`" `"$dv`""
+            $ok = $true
+        } catch {
+            Msg "AVISO: não deu para montar o VU1 nativo; a geometria fica no interpretador (mais lento). $($_.Exception.Message)"
+        }
+    }
+    if (-not $ok) {
+        New-Item -ItemType Directory -Force $dv | Out-Null
+        [IO.File]::WriteAllText((Join-Path $dv 'inicios.txt'), '')
+        [IO.File]::WriteAllText((Join-Path $dv 'extras.txt'), '')
+    }
+    # programas mais executados: as operações de ponto flutuante em linha (compila mais devagar, roda mais rápido)
+    if ($JOGO.vu1_quentes) { $env:PS2X_VU1_QUENTES = ($JOGO.vu1_quentes -join ',') }
+    Msg 'traduzindo os microprogramas do VU1'
+    Exec $LOG "python -I `"$R\ferramentas\vu1_tradutor.py`" `"$vu\vu1_programas.cpp`" `"$dv`" --extras `"$dv\extras.txt`""
+}
+
 # ---------------------------------------------------------------------------- compilar
 # AVX2 só se a CPU tiver (o código traduzido fica mais rápido com ele)
 Add-Type -Namespace Otavix -Name Cpu -MemberDefinition '[DllImport("kernel32.dll")] public static extern bool IsProcessorFeaturePresent(uint f);'
@@ -230,23 +269,32 @@ if (-not $Jobs) {
     $Jobs = [math]::Max(1, [math]::Min([Environment]::ProcessorCount, [math]::Floor($livre / 3)))
 }
 $BJ = Join-Path $P 'out\jogo'
-Etapa '5_compilar' {
+Etapa '6_compilar' {
     $arch = if ($avx2) { '/arch:AVX2 ' } else { '' }
+    # os microprogramas do VU1 compilam com o clang-cl do Visual Studio se ele estiver instalado (mais rápido);
+    # sem ele, com o próprio MSVC
+    $lancador = (Join-Path $R 'ferramentas\otx_lanca.py').Replace('\', '/')
     Msg "compilando o jogo ($Jobs compilações em paralelo$(if ($avx2) { ', AVX2' }); de 20 min a 1 h)"
     $cfg = "-DCMAKE_BUILD_TYPE=RelWithDebInfo `"-DCMAKE_CXX_FLAGS_RELWITHDEBINFO=/O2 /Ob2 /Oi /DNDEBUG $arch/GS-`" `"-DCMAKE_C_FLAGS_RELWITHDEBINFO=/O2 /DNDEBUG`" " +
            "`"-DCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO=/INCREMENTAL:NO`" -DPS2X_ENABLE_AGRESSIVE_LOGS=OFF -DPS2X_ENABLE_IOP_RPC_TRACE=OFF " +
-           "-DPS2X_SHOW_WINDOWS_CONSOLE=OFF -DPS2X_BUILD_TEST=OFF -DPS2X_BUILD_STUDIO=OFF -DPS2X_BUILD_ANALYZER=OFF"
+           "-DPS2X_SHOW_WINDOWS_CONSOLE=OFF -DPS2X_BUILD_TEST=OFF -DPS2X_BUILD_STUDIO=OFF -DPS2X_BUILD_ANALYZER=OFF " +
+           "`"-DPS2X_VU1_LANCADOR=$lancador`""
     Exec $LOG (ComVS "cmake -S `"$P`" -B `"$BJ`" -G Ninja $cfg")
     Exec $LOG (ComVS "cmake --build `"$BJ`" --target ps2EntryRunner --parallel $Jobs")
     if (-not (Test-Path (Join-Path $BJ 'ps2xRuntime\ps2EntryRunner.exe'))) { throw "o executável não foi gerado (veja $LOG)" }
 }
 
 # ---------------------------------------------------------------------------- jogar.cmd
-Etapa '6_jogar' {
+Etapa '7_jogar' {
     $bin = Join-Path $R 'bin'
     New-Item -ItemType Directory -Force $bin | Out-Null
     Copy-Item (Join-Path $BJ 'ps2xRuntime\ps2EntryRunner.exe') (Join-Path $bin $JOGO.exe) -Force
     Copy-Item (Join-Path $BJ 'ps2xRuntime\*.dll') $bin -Force
+    # variáveis do jogo (jogo.json "ambiente") ao lado do exe: o runtime lê ao abrir, sem passar por cima das que já
+    # vierem definidas (assim o launcher, que abre o exe direto, e o jogar.cmd rodam o jogo do mesmo jeito)
+    $ambTxt = @('# gerado pelo gerar.ps1 a partir do jogo\jogo.json ("ambiente"): NOME=valor')
+    if ($JOGO.ambiente) { foreach ($v in $JOGO.ambiente.PSObject.Properties) { $ambTxt += "$($v.Name)=$($v.Value)" } }
+    [IO.File]::WriteAllLines((Join-Path $bin 'ambiente.txt'), [string[]]$ambTxt, (New-Object Text.UTF8Encoding $false))
     $raizCd = if ($JOGO.cd_root) { "%RAIZ%trabalho\disc\$($JOGO.cd_root)" } else { '%RAIZ%trabalho\disc' }
     # variáveis do jogo (jogo.json "ambiente"), sem passar por cima das que o jogador já definiu
     $amb = @()

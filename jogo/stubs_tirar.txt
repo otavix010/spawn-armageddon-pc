@@ -1,0 +1,3 @@
+# Som: o libsdr do jogo fala por RPC com o SDRDRV no IOP emulado (SPU2 emulado no ps2xIOP)
+sceSdRemoteInit
+sceSdRemote

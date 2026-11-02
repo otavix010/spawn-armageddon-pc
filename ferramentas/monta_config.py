@@ -82,6 +82,14 @@ def main():
     corrigidas = []
     cortadas_stub = []
     end_stubs = sorted(int(s.split('@', 1)[1], 16) for s in stubs if '@' in s)
+    nome_stub = {int(s.split('@', 1)[1], 16): s.split('@', 1)[0] for s in stubs if '@' in s}
+    extras_stub = []
+    inicios_csv = set()
+    with open(os.path.join(pasta, 'ghidra_funcoes.csv'), encoding='utf-8') as ent:
+        for linha in ent:
+            c = linha.split(',')
+            if len(c) > 1 and c[1].startswith('0x'):
+                inicios_csv.add(int(c[1], 16))
     with open(os.path.join(pasta, 'ghidra_funcoes.csv'), encoding='utf-8') as ent, \
             open(limpo, 'w', encoding='utf-8', newline='\n') as sai:
         for i, linha in enumerate(ent):
@@ -96,7 +104,18 @@ def main():
                 if i_st < len(end_stubs) and end_stubs[i_st] < fim:
                     partes[2] = '0x%08X' % end_stubs[i_st]
                     cortadas_stub.append('%s→0x%X' % (partes[0], end_stubs[i_st]))
+                    # o stub também precisa de uma linha própria no CSV, senão o endereço dele não vira
+                    # função e o salto cai em missing-target (10kB: sceVu0CopyMatrix no meio de FUN_005ebf40)
+                    ini_st = end_stubs[i_st]
+                    fim_st = end_stubs[i_st + 1] if i_st + 1 < len(end_stubs) and end_stubs[i_st + 1] < fim else fim
+                    extras_stub.append('%s,0x%08X,0x%08X,%d' % (nome_stub[ini_st], ini_st, fim_st, fim_st - ini_st))
             sai.write(','.join(partes) + '\n')
+        inicios = set()
+        for e in extras_stub:
+            a = int(e.split(',')[1], 16)
+            if a not in inicios and a not in inicios_csv:
+                inicios.add(a)
+                sai.write(e + '\n')
     if corrigidas:
         print('  ~ %d funções com o fim inflado no CSV do Ghidra: %s' % (len(corrigidas), '; '.join(corrigidas)))
     if cortadas_stub:
@@ -136,6 +155,14 @@ def main():
         novos = ''.join('  "otavix_%08X@0x%08X",\n' % (e, e) for e in ends)
         an = an[:m.end()] + '\n' + novos + an[m.end():].lstrip('\n')
         print('  + %d entradas extras' % len(ends))
+    # Otavix (30/10): o analisador troca por NOP toda "sw" seguida de j/jal cujo endereço cai em "código" — e, sem tabela
+    # de seções (God of War), o segmento inteiro conta como código, .data/.bss inclusive. Eram 73 escritas normais em
+    # variáveis globais apagadas (ex.: 0x26c808, o "pendente" da fila do 989snd: os callbacks dos pedidos nunca rodavam
+    # e o carregador travava). Código automodificável de verdade é raro e o runtime não depende disso: tira todos.
+    automod = re.findall(r'(?m)^\s*\{[^}\n]*\}\s*,?\s*# Potential self-modifying code\s*$\n?', an)
+    if automod:
+        an = re.sub(r'(?m)^\s*\{[^}\n]*\}\s*,?\s*# Potential self-modifying code\s*$\n?', '', an)
+        print('  - %d NOPs de "código automodificável" do analisador tirados (eram escritas em dados)' % len(automod))
     tomllib.loads(an)   # confere que continua TOML válido
     open(os.path.join(pasta, 'config.toml'), 'w', encoding='utf-8', newline='\n').write(an)
     print('%s: %d stubs (analisador %d, ghidra %d)' % (os.path.basename(pasta), len(stubs), len(s_an), len(s_gh)))
