@@ -3,6 +3,20 @@
 O Otavix Launcher mostra este arquivo na página "Novidades" do jogo. Cada atualização tem um título
 "## <data> · <versão>" e o texto em português (### pt), inglês (### en) e espanhol (### es). As mais novas ficam em cima.
 
+## 03/11/2026 · 0.4.3
+### pt
+- Correção de desempenho (a 0.4.2 podia deixar o jogo mais lento).
+- Atualizar o port pelo launcher não falha mais ("already exists in working directory"); o gerador também funciona em discos exFAT/FAT e baixa de novo o Git portátil se ele estiver danificado ou bloqueado.
+- O ponteiro do mouse some sobre o jogo; com a janela do tamanho do monitor, o jogo abre sem bordas.
+### en
+- Performance fix (0.4.2 could make the game slower).
+- Updating the port from the launcher no longer fails ("already exists in working directory"); the generator also works on exFAT/FAT drives and downloads the portable Git again if it is damaged or blocked.
+- The mouse pointer hides over the game; with the window set to the monitor's size, the game opens borderless.
+### es
+- Corrección de rendimiento (la 0.4.2 podía dejar el juego más lento).
+- Actualizar el port desde el launcher ya no falla ("already exists in working directory"); el generador también funciona en discos exFAT/FAT y vuelve a descargar el Git portátil si está dañado o bloqueado.
+- El puntero del ratón se oculta sobre el juego; con la ventana del tamaño del monitor, el juego se abre sin bordes.
+
 ## 03/11/2026 · 0.4.2
 ### pt
 - Efeitos que leem a profundidade agora saem como no PS2.
