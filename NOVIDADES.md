@@ -3,6 +3,17 @@
 O Otavix Launcher mostra este arquivo na página "Novidades" do jogo. Cada atualização tem um título
 "## <data> · <versão>" e o texto em português (### pt), inglês (### en) e espanhol (### es). As mais novas ficam em cima.
 
+## 12/11/2026 · 0.4.6
+### pt
+- **Mais fps em processadores de 6 núcleos** (como Core i5 e Ryzen 5) com outros programas abertos: o motor não prende mais as tarefas principais em núcleos fixos do processador.
+- Motor 0.1.9: na próxima geração o gerador refaz da etapa 3 sozinho (o disco extraído continua valendo).
+### en
+- **Higher fps on 6-core processors** (such as Core i5 and Ryzen 5) with other programs open: the engine no longer pins its main tasks to fixed cores.
+- Engine 0.1.9: on the next generation the generator redoes it from step 3 on its own (the extracted disc is kept).
+### es
+- **Más fps en procesadores de 6 núcleos** (como Core i5 y Ryzen 5) con otros programas abiertos: el motor ya no fija sus tareas principales en núcleos fijos.
+- Motor 0.1.9: en la próxima generación el generador rehace desde la etapa 3 solo (el disco extraído se mantiene).
+
 ## 12/11/2026 · 0.4.5
 ### pt
 - Na primeira vez depois de uma atualização, uma mensagem avisa enquanto os gráficos são preparados (pode levar até 1 minuto).
