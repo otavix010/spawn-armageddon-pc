@@ -3,6 +3,20 @@
 O Otavix Launcher mostra este arquivo na página "Novidades" do jogo. Cada atualização tem um título
 "## <data> · <versão>" e o texto em português (### pt), inglês (### en) e espanhol (### es). As mais novas ficam em cima.
 
+## 13/11/2026 · 0.4.8
+### pt
+- **Imagem suavizada com resolução interna**: com 2x/4x e o escalonador "Nenhum", a imagem esticada para a tela ficava serrilhada; agora é suavizada.
+- **Medidor do F10 visível em tela cheia**: o medidor de desempenho não aparecia sobre o jogo em tela cheia; agora é desenhado pelo próprio jogo, no canto da imagem.
+- Motor 0.1.11: na próxima geração o gerador refaz da etapa 3 sozinho (o disco extraído continua valendo).
+### en
+- **Smoothed image with internal resolution**: with 2x/4x and the "None" scaler, the image stretched to the screen looked jagged; it is now smoothed.
+- **F10 overlay visible in fullscreen**: the performance overlay did not show over the game in fullscreen; it is now drawn by the game itself, in the corner of the image.
+- Engine 0.1.11: on the next generation the generator redoes it from step 3 on its own (the extracted disc is kept).
+### es
+- **Imagen suavizada con resolución interna**: con 2x/4x y el escalador "Ninguno", la imagen estirada a la pantalla se veía dentada; ahora se suaviza.
+- **Medidor de F10 visible en pantalla completa**: el medidor de rendimiento no aparecía sobre el juego en pantalla completa; ahora lo dibuja el propio juego, en la esquina de la imagen.
+- Motor 0.1.11: en la próxima generación el generador rehace desde la etapa 3 solo (el disco extraído se mantiene).
+
 ## 13/11/2026 · 0.4.7
 ### pt
 - **Corrigida uma causa de fechamento do jogo com o erro 0xC0000005** depois de alguns minutos de jogo: em certas cenas o motor lia memória fora do lugar ao enviar os gráficos.
