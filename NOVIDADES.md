@@ -3,6 +3,17 @@
 O Otavix Launcher mostra este arquivo na página "Novidades" do jogo. Cada atualização tem um título
 "## <data> · <versão>" e o texto em português (### pt), inglês (### en) e espanhol (### es). As mais novas ficam em cima.
 
+## 14/11/2026 · 0.4.9
+### pt
+- **Menus e textos mais lisos com resolução interna (2x/4x)**: as letras dos menus saíam em degraus; agora saem lisas.
+- Motor 0.1.12: na próxima geração o gerador refaz da etapa 3 sozinho (o disco extraído continua valendo).
+### en
+- **Smoother menus and text with internal resolution (2x/4x)**: menu letters looked stair-stepped; they are now smooth.
+- Engine 0.1.12: on the next generation the generator redoes it from step 3 on its own (the extracted disc is kept).
+### es
+- **Menús y textos más suaves con resolución interna (2x/4x)**: las letras de los menús salían escalonadas; ahora salen suaves.
+- Motor 0.1.12: en la próxima generación el generador rehace desde la etapa 3 solo (el disco extraído se mantiene).
+
 ## 13/11/2026 · 0.4.8
 ### pt
 - **Imagem suavizada com resolução interna**: com 2x/4x e o escalonador "Nenhum", a imagem esticada para a tela ficava serrilhada; agora é suavizada.
