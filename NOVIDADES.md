@@ -3,6 +3,17 @@
 O Otavix Launcher mostra este arquivo na página "Novidades" do jogo. Cada atualização tem um título
 "## <data> · <versão>" e o texto em português (### pt), inglês (### en) e espanhol (### es). As mais novas ficam em cima.
 
+## 15/11/2026 · 0.4.10
+### pt
+- **Primeira abertura sem "Não respondendo"**: na primeira vez depois de uma atualização, enquanto os gráficos eram preparados (pode levar alguns minutos num notebook), a janela parava de responder e o Windows oferecia fechá-la; agora ela continua respondendo e o título avisa que os gráficos estão sendo preparados.
+- Motor 0.1.13: na próxima geração o gerador refaz da etapa 3 sozinho (o disco extraído continua valendo).
+### en
+- **First launch without "Not responding"**: the first time after an update, while the graphics were being prepared (it can take a few minutes on a laptop), the window stopped responding and Windows offered to close it; it now stays responsive and the title says the graphics are being prepared.
+- Engine 0.1.13: on the next generation the generator redoes it from step 3 on its own (the extracted disc is kept).
+### es
+- **Primera apertura sin "No responde"**: la primera vez después de una actualización, mientras se preparaban los gráficos (puede tardar unos minutos en un portátil), la ventana dejaba de responder y Windows ofrecía cerrarla; ahora sigue respondiendo y el título avisa que se están preparando los gráficos.
+- Motor 0.1.13: en la próxima generación el generador rehace desde la etapa 3 solo (el disco extraído se mantiene).
+
 ## 14/11/2026 · 0.4.9
 ### pt
 - **Menus e textos mais lisos com resolução interna (2x/4x)**: as letras dos menus saíam em degraus; agora saem lisas.
