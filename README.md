@@ -67,6 +67,20 @@ FPS de jogo, no motor publicado, sem a resolução interna (1x). **Só colocamos
 | **Notebook** | Core i5-10300H (4/8) | GTX 1650 | não medido |
 | **Portátil** | Legion Go S (Linux) | Radeon 780M | não suportado |
 
+### Por número de núcleos (motor 0.1.13)
+
+**No 4x, 60 FPS travado com 8, 6, 4 e até 2 núcleos** (mínimo de 58 a 60).
+
+| Núcleos / threads | 4x: FPS médio (mínimo) |
+|---|---|
+| 8 / 16 | 60 (58–60) |
+| 6 / 12 | 60 (58–60) |
+| 4 / 8 | 60 (58–60) |
+| 4 / 4 | 60 (58–60) |
+| 2 / 4 | 60 (58–60) |
+
+**Como medimos:** Ryzen 7 9800X3D + RTX 5080, 1080p, com o jogo preso a menos núcleos pelo Windows (afinidade), média do começo do jogo (uma rodada). Isso dá uma boa ideia, mas um processador fraco de verdade (menos cache, clock menor) pode render menos que um 9800X3D limitado. Entre rodadas há variação de 3 a 5 FPS.
+
 ## Problemas conhecidos
 
 - No motor publicado, o jogo pode **cair por volta dos 25 s ao pular os vídeos**. Já não acontece na build de 09/11 que estamos testando; a correção ainda não foi publicada.
@@ -127,7 +141,7 @@ Depois de atualizar o port, `gerar.cmd -RefazerDe 3` baixa o motor novo, retradu
 
 A **native PC port** of *Spawn: Armageddon* (PlayStation 2, 2003) made by **static recompilation** with the project's own PS2 engine. **Work in progress.** It reaches the 3D levels at 60 FPS, **with sound** (emulated SPU2) **and the FMV videos**.
 
-**Platforms:** Windows 10/11 only for now (Linux is not supported yet; only the *God of War: Ascension* port has a Linux beta). Performance is listed only where we measured it (see the table above); machines not listed are not measured yet. **Easiest: the [Otavix Launcher](https://github.com/otavix010/otavix-launcher/releases/latest).**
+**Platforms:** Windows 10/11 only for now (Linux is not supported yet; only the *God of War: Ascension* port has a Linux beta). Performance is listed only where we measured it (see the table above); machines not listed are not measured yet. **Easiest: the [Otavix Launcher](https://github.com/otavix010/otavix-launcher/releases/latest).** Per CPU core count (engine 0.1.13, 9800X3D limited by affinity): 60 FPS locked at 4x with 8, 6, 4 and even 2 cores.
 
 **Bring your own game**: no game code or data here, only the function map (addresses) and translation settings. You need the **European** release (SLES-52326, Redump "Spawn - Armageddon (Europe) (En,Fr,De,Es,It)") as an **.iso**. Install Visual Studio 2022 Build Tools with C++ and CMake (commands above), download this repository to a path without spaces, double-click **`gerar.cmd`** (it checks your ISO, extracts the disc files, downloads the prebuilt engine package (no Git needed), translates the game code on your PC and builds it, in 5 to 30 minutes), then play with **`jogar.cmd`**.
 
