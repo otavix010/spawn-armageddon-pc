@@ -41,6 +41,27 @@ Como o código do jogo não pode ser distribuído, **o seu PC gera e compila a p
 
 Já dá para ver o jogo: inicia, carrega os módulos do IOP e os sons, passa pela escolha de idioma, pela checagem do cartão de memória e pelo **menu principal** (com a arte e o logo originais) e entra na **primeira fase em 3D**, com a cidade, a catedral, o Spawn e as cenas texturizados como no PlayStation 2. **Agora roda a 60 FPS, inclusive nas cenas mais pesadas** (testado num Ryzen 7 9800X3D; usa uns 6 núcleos e mantém 60 FPS mesmo limitado a 8 threads lógicas). Os microprogramas de geometria do VU1 são traduzidos para C++ na sua máquina, a partir do executável do seu disco (a etapa "VU1" do gerador; o repositório só traz onde eles ficam: offsets e tamanhos), e a rasterização usa AVX2 em várias threads. **Agora com som** (o chip de som SPU2 é emulado: música, efeitos e ambiente) **e com os vídeos** (abertura, história e demonstração). A jogabilidade já foi testada (andar, pular, atacar, tutorial da primeira fase; 15 minutos seguidos sem travar); falta testar salvar e as fases seguintes. Por enquanto, só para testes.
 
+## Teclado e mouse
+
+O teclado e o mouse funcionam junto com o controle. As teclas são trocadas na página **Controles** do
+[Otavix Launcher](https://github.com/otavix010/otavix-launcher/releases/latest), que também liga ou desliga o teclado e o mouse e ajusta a sensibilidade. Teclas padrão:
+
+| Botão do PlayStation 2 | Tecla padrão |
+|---|---|
+| Analógico esquerdo | W A S D |
+| Analógico direito | mouse (ou I J K L) |
+| Direcional | setas |
+| X | Espaço ou X |
+| Bola | C ou Esc |
+| Quadrado | botão esquerdo do mouse ou Z |
+| Triângulo | botão direito do mouse ou V |
+| L1 / R1 | Q / E |
+| L2 / R2 | Shift esquerdo / Shift direito |
+| L3 / R3 | F / botão do meio do mouse |
+| START / SELECT | Enter / Tab |
+
+O ponteiro do mouse só fica preso na janela depois da primeira tecla do jogo; Alt+Tab solta. F10 (medidor de desempenho), F11 e Alt+Enter (tela cheia) continuam sendo atalhos do port. Sem o launcher: `PS2X_TECLADO=0|1`, `PS2X_MOUSE=0|1`, `PS2X_MOUSE_SENS=5..200` e `PS2X_TECLAS="cross=space;square=mouse1 j;lstick_up=w"` (botão=teclas, separados por `;`).
+
 ## Plataformas
 
 | | **Windows** | **Linux / SteamOS** |
