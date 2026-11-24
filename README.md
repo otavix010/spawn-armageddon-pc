@@ -62,6 +62,15 @@ O teclado e o mouse funcionam junto com o controle. As teclas são trocadas na p
 
 O ponteiro do mouse só fica preso na janela depois da primeira tecla do jogo; Alt+Tab solta. F10 (medidor de desempenho), F11 e Alt+Enter (tela cheia) continuam sendo atalhos do port. Sem o launcher: `PS2X_TECLADO=0|1`, `PS2X_MOUSE=0|1`, `PS2X_MOUSE_SENS=5..200` e `PS2X_TECLAS="cross=space;square=mouse1 j;lstick_up=w"` (botão=teclas, separados por `;`).
 
+## Salvar e carregar o estado (save state)
+
+Além do save do próprio jogo (cartão de memória), dá para salvar o momento exato e voltar a ele, como nos emuladores, em 9 espaços:
+
+- **Teclado:** F5 salva, F8 carrega, F6 e F7 trocam o espaço.
+- **Controle:** segure **Select** e aperte **RB** para salvar, **LB** para carregar, e esquerda/direita no direcional para trocar o espaço. O Select usado nessas combinações não chega ao jogo; sozinho, ele funciona normalmente.
+
+Um aviso curto na tela confirma ("Estado salvo no espaço 3"). Não dá para salvar durante um vídeo; o aviso diz quando. Os estados ficam em `estados\` na pasta do port e valem só para a mesma versão do port: depois de uma atualização, os estados antigos são recusados (os saves do cartão continuam valendo). Carregar um estado não volta o cartão de memória no tempo. Desligar: na página **Controles** do launcher, ou `PS2X_ESTADOS=0`.
+
 ## Plataformas
 
 | | **Windows** | **Linux / SteamOS** |
@@ -160,7 +169,7 @@ Depois de atualizar o port, `gerar.cmd -RefazerDe 3` baixa o motor novo, retradu
 
 ## English summary
 
-A **native PC port** of *Spawn: Armageddon* (PlayStation 2, 2003) made by **static recompilation** with the project's own PS2 engine. **Work in progress.** It reaches the 3D levels at 60 FPS, **with sound** (emulated SPU2) **and the FMV videos**.
+A **native PC port** of *Spawn: Armageddon* (PlayStation 2, 2003) made by **static recompilation** with the project's own PS2 engine. **Work in progress.** It reaches the 3D levels at 60 FPS, **with sound** (emulated SPU2) **and the FMV videos**. **Save states** in 9 slots: F5 saves, F8 loads, F6/F7 change the slot (controller: hold Select + RB / LB / D-pad left-right); they work only with the same port version.
 
 **Platforms:** Windows 10/11 only for now (Linux is not supported yet; only the *God of War: Ascension* port has a Linux beta). Performance is listed only where we measured it (see the table above); machines not listed are not measured yet. **Easiest: the [Otavix Launcher](https://github.com/otavix010/otavix-launcher/releases/latest).** Per CPU core count (engine 0.1.13, 9800X3D limited by affinity): 60 FPS locked at 4x with 8, 6, 4 and even 2 cores.
 
